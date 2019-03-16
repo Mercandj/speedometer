@@ -26,8 +26,10 @@ android {
             // Split resources.
             // https://medium.com/google-developer-experts/android-project-structure-alternative-way-29ce766682f0#.sjnhetuhb
             res.srcDirs = [
+                    'src/main/res/font',
                     'src/main/res/main',
-                    'src/main/res/permission'
+                    'src/main/res/permission',
+                    'src/main/res/speed_view'
             ]
         }
     }

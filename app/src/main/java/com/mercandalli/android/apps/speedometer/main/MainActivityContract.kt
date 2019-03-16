@@ -8,15 +8,15 @@ interface MainActivityContract {
 
         fun onDestroy()
 
-        fun onStartClicked(
-            startStopButtonText: String
-        )
+        fun onMoreClicked()
     }
 
     interface Screen {
 
-        fun setSpeed(text: String)
+        fun showTeslaSpeedView()
 
-        fun setStartStopButtonText(text: String)
+        fun showSegmentSpeedView()
+
+        fun showGoogleSpeedView()
     }
 }

@@ -6,6 +6,10 @@ interface ThemeManager {
 
     fun setDarkEnable(enable: Boolean)
 
+    fun getThemeView(): ThemeView
+
+    fun setThemeView(themeView: ThemeView)
+
     fun isDarkEnable(): Boolean
 
     fun registerThemeListener(listener: ThemeListener)
@@ -15,5 +19,13 @@ interface ThemeManager {
     interface ThemeListener {
 
         fun onThemeChanged()
+
+        fun onThemeViewChanged()
+    }
+
+    enum class ThemeView {
+        Tesla,
+        Segment,
+        Google
     }
 }

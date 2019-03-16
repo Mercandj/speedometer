@@ -10,6 +10,7 @@ internal class ThemeManagerImpl(
     private val darkTheme: Theme = DarkTheme()
     private var currentThemeIndex = 0
     private var listeners = ArrayList<ThemeManager.ThemeListener>()
+    private var themeView = ThemeManager.ThemeView.Tesla
 
     init {
         currentThemeIndex = sharedPreferences.getInt("theme", 0)
@@ -23,6 +24,14 @@ internal class ThemeManagerImpl(
         for (listener in listeners) {
             listener.onThemeChanged()
         }
+    }
+
+    override fun getThemeView(): ThemeManager.ThemeView {
+        return themeView
+    }
+
+    override fun setThemeView(themeView: ThemeManager.ThemeView) {
+        this.themeView = themeView
     }
 
     override fun isDarkEnable(): Boolean {

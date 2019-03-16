@@ -2,25 +2,23 @@ package com.mercandalli.android.apps.speedometer.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.FrameLayout
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.activity.ActivityExtension.bind
+import com.mercandalli.android.apps.speedometer.speed_view.SpeedView
+import com.mercandalli.android.apps.speedometer.speed_view_google.SpeedGoogleView
+import com.mercandalli.android.apps.speedometer.speed_view_segment.SpeedSegmentView
+import com.mercandalli.android.apps.speedometer.speed_view_tesla.SpeedTeslaView
 
 class MainActivity : AppCompatActivity() {
 
-    private val speed: TextView by bind(R.id.activity_main_speed)
-    private val startStopButton: TextView by bind(R.id.activity_main_start)
+    private val speedViewContainer: FrameLayout by bind(R.id.activity_main_speed_view_container)
+    private val onMoreClickedListener = createOnMoreClickedListener()
     private val userAction = createUserAction()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        startStopButton.setOnClickListener {
-            userAction.onStartClicked(
-                startStopButton.text.toString()
-            )
-        }
         userAction.onCreate()
     }
 
@@ -29,14 +27,64 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun createScreen() = object : MainActivityContract.Screen {
+    private fun isCurrentSpeedViewTesla(): Boolean {
+        if (speedViewContainer.childCount == 0) {
+            return false
+        }
+        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        return currentSpeedView is SpeedTeslaView
+    }
 
-        override fun setSpeed(text: String) {
-            speed.text = text
+    private fun isCurrentSpeedViewSegment(): Boolean {
+        if (speedViewContainer.childCount == 0) {
+            return false
+        }
+        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        return currentSpeedView is SpeedSegmentView
+    }
+
+    private fun isCurrentSpeedViewGoogle(): Boolean {
+        if (speedViewContainer.childCount == 0) {
+            return false
+        }
+        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        return currentSpeedView is SpeedGoogleView
+    }
+
+
+    private fun createOnMoreClickedListener() = object : SpeedView.OnMoreClickedListener {
+        override fun onMoreClicked() {
+            userAction.onMoreClicked()
+        }
+    }
+
+    private fun createScreen() = object : MainActivityContract.Screen {
+        override fun showTeslaSpeedView() {
+            if (isCurrentSpeedViewTesla()) {
+                return
+            }
+            val speedView = SpeedTeslaView(this@MainActivity)
+            speedView.setOnMoreClickedListener(onMoreClickedListener)
+            speedViewContainer.addView(speedView)
         }
 
-        override fun setStartStopButtonText(text: String) {
-            startStopButton.text = text
+        override fun showSegmentSpeedView() {
+            if (isCurrentSpeedViewSegment()) {
+                return
+            }
+            val speedView = SpeedSegmentView(this@MainActivity)
+            speedView.setOnMoreClickedListener(onMoreClickedListener)
+            speedViewContainer.addView(speedView)
+
+        }
+
+        override fun showGoogleSpeedView() {
+            if (isCurrentSpeedViewGoogle()) {
+                return
+            }
+            val speedView = SpeedGoogleView(this@MainActivity)
+            speedView.setOnMoreClickedListener(onMoreClickedListener)
+            speedViewContainer.addView(speedView)
         }
     }
 
@@ -44,10 +92,12 @@ class MainActivity : AppCompatActivity() {
         val screen = createScreen()
         val speedManager = ApplicationGraph.getSpeedManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
+        val themeManager = ApplicationGraph.getThemeManager()
         return MainActivityPresenter(
             screen,
             speedManager,
-            permissionManager
+            permissionManager,
+            themeManager
         )
     }
 }
