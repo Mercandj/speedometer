@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+// Signing production apk with rootProject.ext.releaseFileSpaceSigningConfig data
+if (file("../config/signing/speedometer-signing.gradle").exists()) {
+    apply from: '../config/signing/speedometer-signing.gradle'
+} else {
+    apply from: '../config/signing/speedometer-signing-template.gradle'
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -15,18 +22,37 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    bundle {
+        density.enableSplit = true
+        abi.enableSplit = true
+        language.enableSplit = false
+    }
+
+    signingConfigs {
+        releaseSigningConfig rootProject.ext.releaseSpeedometerSigningConfig
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseSigningConfig
+            minifyEnabled true
+            //shrinkResources true
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            versionNameSuffix ".dev"
+            shrinkResources false
         }
     }
+
     sourceSets {
         main {
             // Split resources.
             // https://medium.com/google-developer-experts/android-project-structure-alternative-way-29ce766682f0#.sjnhetuhb
             res.srcDirs = [
                     'src/main/res/font',
+                    'src/main/res/icon',
                     'src/main/res/main',
                     'src/main/res/permission',
                     'src/main/res/speed_view'

@@ -28,7 +28,7 @@ class SpeedTeslaView @JvmOverloads constructor(
             userAction.onFabClicked()
         }
         more.setOnClickListener {
-            notifyOnMoreClicked()
+            notifyOnMoreClicked(it)
         }
     }
 

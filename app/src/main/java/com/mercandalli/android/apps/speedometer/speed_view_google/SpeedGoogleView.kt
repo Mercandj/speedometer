@@ -33,7 +33,7 @@ class SpeedGoogleView @JvmOverloads constructor(
             )
         }
         more.setOnClickListener {
-            notifyOnMoreClicked()
+            notifyOnMoreClicked(it)
         }
     }
 

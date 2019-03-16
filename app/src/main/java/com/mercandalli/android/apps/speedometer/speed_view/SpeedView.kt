@@ -2,6 +2,7 @@ package com.mercandalli.android.apps.speedometer.speed_view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 
 open class SpeedView @JvmOverloads constructor(
@@ -16,12 +17,12 @@ open class SpeedView @JvmOverloads constructor(
         onMoreClickedListener = listener
     }
 
-    protected fun notifyOnMoreClicked() {
-        onMoreClickedListener?.onMoreClicked()
+    protected fun notifyOnMoreClicked(view: View) {
+        onMoreClickedListener?.onMoreClicked(view)
     }
 
     interface OnMoreClickedListener {
 
-        fun onMoreClicked()
+        fun onMoreClicked(view: View)
     }
 }

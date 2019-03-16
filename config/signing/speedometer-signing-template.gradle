@@ -1,0 +1,6 @@
+rootProject.ext.releaseSpeedometerSigningConfig = {
+    storeFile file("../config/signing/speedometer.jks")
+    storePassword ""
+    keyAlias ""
+    keyPassword ""
+}

@@ -34,7 +34,7 @@ class SpeedSegmentView @JvmOverloads constructor(
             )
         }
         more.setOnClickListener {
-            notifyOnMoreClicked()
+            notifyOnMoreClicked(it)
         }
     }
 

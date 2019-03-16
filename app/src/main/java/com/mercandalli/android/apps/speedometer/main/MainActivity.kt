@@ -2,6 +2,7 @@ package com.mercandalli.android.apps.speedometer.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.FrameLayout
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.activity.ActivityExtension.bind
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createOnMoreClickedListener() = object : SpeedView.OnMoreClickedListener {
-        override fun onMoreClicked() {
+        override fun onMoreClicked(view: View) {
             userAction.onMoreClicked()
         }
     }
