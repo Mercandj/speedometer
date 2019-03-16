@@ -1,7 +1,8 @@
-package com.mercandalli.android.apps.speedometer
+package com.mercandalli.android.apps.speedometer.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mercandalli.android.apps.speedometer.R
 
 class MainActivity : AppCompatActivity() {
 
