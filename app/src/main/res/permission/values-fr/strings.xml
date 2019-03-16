@@ -1,0 +1,5 @@
+<resources>
+    <string name="activity_permissions_title">Localisation</string>
+    <string name="activity_permissions_description">La localisation est nécessaire pour calculer la vitesse</string>
+    <string name="activity_permissions_button">GO</string>
+</resources>

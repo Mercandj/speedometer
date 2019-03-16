@@ -5,10 +5,31 @@
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hello World!" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activity_main_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="0.0 km/h"
+            android:textSize="@dimen/text_size_xxxl" />
+
+        <TextView
+            android:id="@+id/activity_main_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="START"
+            android:textSize="@dimen/text_size_xxxl" />
+
+    </LinearLayout>
 
 </merge>

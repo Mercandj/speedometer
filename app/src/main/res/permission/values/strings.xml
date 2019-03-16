@@ -1,0 +1,5 @@
+<resources>
+    <string name="activity_permissions_title">Location</string>
+    <string name="activity_permissions_description">Speed need access to your location to compute speed</string>
+    <string name="activity_permissions_button">ALLOW</string>
+</resources>
