@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         if (speedViewContainer.childCount == 0) {
             return false
         }
-        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        val currentSpeedView = speedViewContainer.getChildAt(0)
         return currentSpeedView is SpeedTeslaView
     }
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         if (speedViewContainer.childCount == 0) {
             return false
         }
-        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        val currentSpeedView = speedViewContainer.getChildAt(0)
         return currentSpeedView is SpeedSegmentView
     }
 
@@ -47,10 +47,18 @@ class MainActivity : AppCompatActivity() {
         if (speedViewContainer.childCount == 0) {
             return false
         }
-        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        val currentSpeedView = speedViewContainer.getChildAt(0)
         return currentSpeedView is SpeedGoogleView
     }
 
+    private fun clearSpeedViewContainer() {
+        if (speedViewContainer.childCount == 0) {
+            return
+        }
+        val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
+        currentSpeedView.setOnMoreClickedListener(null)
+        speedViewContainer.removeAllViews()
+    }
 
     private fun createOnMoreClickedListener() = object : SpeedView.OnMoreClickedListener {
         override fun onMoreClicked() {
@@ -63,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             if (isCurrentSpeedViewTesla()) {
                 return
             }
+            clearSpeedViewContainer()
             val speedView = SpeedTeslaView(this@MainActivity)
             speedView.setOnMoreClickedListener(onMoreClickedListener)
             speedViewContainer.addView(speedView)
@@ -72,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             if (isCurrentSpeedViewSegment()) {
                 return
             }
+            clearSpeedViewContainer()
             val speedView = SpeedSegmentView(this@MainActivity)
             speedView.setOnMoreClickedListener(onMoreClickedListener)
             speedViewContainer.addView(speedView)
@@ -82,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             if (isCurrentSpeedViewGoogle()) {
                 return
             }
+            clearSpeedViewContainer()
             val speedView = SpeedGoogleView(this@MainActivity)
             speedView.setOnMoreClickedListener(onMoreClickedListener)
             speedViewContainer.addView(speedView)

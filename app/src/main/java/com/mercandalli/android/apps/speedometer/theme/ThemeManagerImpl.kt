@@ -31,7 +31,13 @@ internal class ThemeManagerImpl(
     }
 
     override fun setThemeView(themeView: ThemeManager.ThemeView) {
+        if (this.themeView == themeView) {
+            return
+        }
         this.themeView = themeView
+        for (listener in listeners) {
+            listener.onThemeViewChanged()
+        }
     }
 
     override fun isDarkEnable(): Boolean {
