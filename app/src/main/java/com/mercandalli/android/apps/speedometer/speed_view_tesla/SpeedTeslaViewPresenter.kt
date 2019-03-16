@@ -1,13 +1,15 @@
 package com.mercandalli.android.apps.speedometer.speed_view_tesla
 
 import com.mercandalli.android.apps.speedometer.R
+import com.mercandalli.android.apps.speedometer.location.LocationManager
 import com.mercandalli.android.apps.speedometer.permission.PermissionManager
 import com.mercandalli.android.apps.speedometer.speed.SpeedManager
 
 class SpeedTeslaViewPresenter(
     private val screen: SpeedTeslaViewContract.Screen,
-    private val speedManager: SpeedManager,
-    private val permissionManager: PermissionManager
+    private val locationManager: LocationManager,
+    private val permissionManager: PermissionManager,
+    private val speedManager: SpeedManager
 ) : SpeedTeslaViewContract.UserAction {
 
     private val speedListener = createSpeedListener()
@@ -30,6 +32,10 @@ class SpeedTeslaViewPresenter(
         val gpsPermission = permissionManager.hasGpsPermission()
         if (!gpsPermission) {
             permissionManager.requestGpsPermission()
+            return
+        }
+        if (!locationManager.isLocationEnabledOnDevice()) {
+            locationManager.enableDeviceLocation()
             return
         }
         speedManager.start()

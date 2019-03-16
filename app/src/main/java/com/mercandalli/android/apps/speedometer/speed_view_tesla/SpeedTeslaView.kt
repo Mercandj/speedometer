@@ -68,12 +68,14 @@ class SpeedTeslaView @JvmOverloads constructor(
             }
         }
         val screen = createScreen()
-        val speedManager = ApplicationGraph.getSpeedManager()
+        val locationManager = ApplicationGraph.getLocationManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
+        val speedManager = ApplicationGraph.getSpeedManager()
         return SpeedTeslaViewPresenter(
             screen,
-            speedManager,
-            permissionManager
+            locationManager,
+            permissionManager,
+            speedManager
         )
     }
 }

@@ -3,6 +3,7 @@ package com.mercandalli.android.apps.speedometer.main
 import android.annotation.SuppressLint
 import android.content.Context
 import com.mercandalli.android.apps.speedometer.gps.GpsModule
+import com.mercandalli.android.apps.speedometer.location.LocationModule
 import com.mercandalli.android.apps.speedometer.main_thread.MainThreadModule
 import com.mercandalli.android.apps.speedometer.network.NetworkModule
 import com.mercandalli.android.apps.speedometer.permission.PermissionModule
@@ -22,6 +23,7 @@ class ApplicationGraph(
     private val okHttpClientLazy = networkModule.createOkHttpClientLazy()
 
     private val gpsManagerInternal by lazy { GpsModule(context).createGpsManager() }
+    private val locationManagerInternal by lazy { LocationModule(context).createLocationManager() }
     private val mainThreadPostInternal by lazy { MainThreadModule().createMainThreadPost() }
     private val networkInternal by lazy { networkModule.createNetwork() }
     private val permissionManagerInternal by lazy { PermissionModule(context).createPermissionManager() }
@@ -47,6 +49,7 @@ class ApplicationGraph(
         }
 
         fun getGpsManager() = graph!!.gpsManagerInternal
+        fun getLocationManager() = graph!!.locationManagerInternal
         fun getMainThreadPost() = graph!!.mainThreadPostInternal
         fun getNetwork() = graph!!.networkInternal
         fun getOkHttpClientLazy() = graph!!.okHttpClientLazy

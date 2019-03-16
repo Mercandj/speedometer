@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -47,11 +48,12 @@ public class GpsManagerImpl implements GpsManager {
         };
     }
 
+    @NotNull
     public GpsCallback getGPSCallback() {
         return GpsManagerImpl.gpsCallback;
     }
 
-    public void setGPSCallback(final GpsCallback gpsCallback) {
+    public void setGPSCallback(@NotNull final GpsCallback gpsCallback) {
         GpsManagerImpl.gpsCallback = gpsCallback;
     }
 

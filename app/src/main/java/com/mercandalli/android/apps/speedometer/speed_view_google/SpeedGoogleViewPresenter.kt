@@ -1,12 +1,14 @@
 package com.mercandalli.android.apps.speedometer.speed_view_google
 
+import com.mercandalli.android.apps.speedometer.location.LocationManager
 import com.mercandalli.android.apps.speedometer.permission.PermissionManager
 import com.mercandalli.android.apps.speedometer.speed.SpeedManager
 
 class SpeedGoogleViewPresenter(
     private val screen: SpeedGoogleViewContract.Screen,
-    private val speedManager: SpeedManager,
-    private val permissionManager: PermissionManager
+    private val locationManager: LocationManager,
+    private val permissionManager: PermissionManager,
+    private val speedManager: SpeedManager
 ) : SpeedGoogleViewContract.UserAction {
 
     private val speedListener = createSpeedListener()
@@ -31,6 +33,10 @@ class SpeedGoogleViewPresenter(
         val gpsPermission = permissionManager.hasGpsPermission()
         if (!gpsPermission) {
             permissionManager.requestGpsPermission()
+            return
+        }
+        if (!locationManager.isLocationEnabledOnDevice()) {
+            locationManager.enableDeviceLocation()
             return
         }
         speedManager.start()
