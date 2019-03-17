@@ -1,5 +1,7 @@
 package com.mercandalli.android.apps.speedometer.speed_view_tesla
 
+import androidx.annotation.ColorRes
+
 interface SpeedTeslaViewContract {
 
     interface UserAction {
@@ -23,6 +25,10 @@ interface SpeedTeslaViewContract {
 
         fun setStartStopButtonText(
             drawableRes: Int
+        )
+
+        fun setTextSecondaryColorRes(
+            @ColorRes colorRes: Int
         )
     }
 }

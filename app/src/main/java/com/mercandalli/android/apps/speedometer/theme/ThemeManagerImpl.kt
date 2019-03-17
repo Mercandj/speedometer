@@ -1,6 +1,7 @@
 package com.mercandalli.android.apps.speedometer.theme
 
 import android.content.SharedPreferences
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal class ThemeManagerImpl(
     private val sharedPreferences: SharedPreferences
@@ -9,11 +10,17 @@ internal class ThemeManagerImpl(
     private val lightTheme: Theme = LightTheme()
     private val darkTheme: Theme = DarkTheme()
     private var currentThemeIndex = 0
-    private var listeners = ArrayList<ThemeManager.ThemeListener>()
+    private var listeners = CopyOnWriteArrayList<ThemeManager.ThemeListener>()
     private var themeView = ThemeManager.ThemeView.Tesla
 
     init {
         currentThemeIndex = sharedPreferences.getInt("theme", 0)
+        themeView = stringToThemeView(
+            sharedPreferences.getString(
+                "theme-view",
+                themeViewToString(themeView)
+            )!!
+        )
     }
 
     override fun getTheme(): Theme = if (currentThemeIndex == 0) lightTheme else darkTheme
@@ -35,6 +42,12 @@ internal class ThemeManagerImpl(
             return
         }
         this.themeView = themeView
+        sharedPreferences.edit()
+            .putString(
+                "theme-view",
+                themeViewToString(themeView)
+            )
+            .apply()
         for (listener in listeners) {
             listener.onThemeViewChanged()
         }
@@ -58,5 +71,26 @@ internal class ThemeManagerImpl(
     companion object {
         @JvmStatic
         val PREFERENCE_NAME = "ThemeManager"
+
+        private fun themeViewToString(
+            themeView: ThemeManager.ThemeView
+        ): String {
+            return when (themeView) {
+                ThemeManager.ThemeView.Tesla -> "tesla"
+                ThemeManager.ThemeView.Segment -> "segment"
+                ThemeManager.ThemeView.Google -> "google"
+            }
+        }
+
+        private fun stringToThemeView(
+            themeViewString: String
+        ): ThemeManager.ThemeView {
+            return when (themeViewString) {
+                "tesla" -> ThemeManager.ThemeView.Tesla
+                "segment" -> ThemeManager.ThemeView.Segment
+                "google" -> ThemeManager.ThemeView.Google
+                else -> ThemeManager.ThemeView.Tesla
+            }
+        }
     }
 }

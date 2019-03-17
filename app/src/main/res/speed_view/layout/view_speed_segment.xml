@@ -6,6 +6,7 @@
     tools:parentTag="android.widget.FrameLayout">
 
     <TextView
+        android:id="@+id/view_speed_segment_title"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/view_speed_segment_speed_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/segment_seven_classic_bold"
@@ -53,6 +55,7 @@
                 <TextView
                     android:id="@+id/view_speed_segment_speed"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/segment_seven_classic_bold"
                     android:gravity="end"

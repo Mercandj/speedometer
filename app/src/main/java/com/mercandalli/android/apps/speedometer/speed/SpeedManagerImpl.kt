@@ -4,6 +4,7 @@ import android.location.Location
 import com.mercandalli.android.apps.speedometer.gps.GpsCallback
 import com.mercandalli.android.apps.speedometer.gps.GpsManager
 import com.mercandalli.android.apps.speedometer.main_thread.MainThreadPost
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnit
 
 class SpeedManagerImpl(
     private val gpsManager: GpsManager,
@@ -13,17 +14,20 @@ class SpeedManagerImpl(
     private val listeners = ArrayList<SpeedManager.Listener>()
     private var speed = 0.0
     private var speedKmh = 0.0
+    private var speedMph = 0.0
+    private var speedPace = 0.0
 
     init {
         gpsManager.setGPSCallback(object : GpsCallback {
             override fun onGPSUpdate(location: Location?) {
                 if (location == null) {
-                    speed = 0.0
-                    speedKmh = 0.0
+                    resetSpeed()
                     return
                 }
                 speed = location.speed.toDouble()
-                speedKmh = convertSpeed(speed)
+                speedKmh = convertSpeedHmh(speed)
+                speedMph = convertSpeedMph(speed)
+                speedPace = convertSpeedPace(speed)
                 notifyListeners()
             }
         })
@@ -35,8 +39,7 @@ class SpeedManagerImpl(
 
     override fun stop() {
         gpsManager.stopListening()
-        speed = 0.0
-        speedKmh = 0.0
+        resetSpeed()
     }
 
     override fun isStarted(): Boolean {
@@ -45,7 +48,11 @@ class SpeedManagerImpl(
 
     override fun getSpeed() = speed
 
+    override fun getSpeedMph() = speedMph
+
     override fun getSpeedKmh() = speedKmh
+
+    override fun getSpeedPace() = speedPace
 
     override fun registerListener(listener: SpeedManager.Listener) {
         if (listeners.contains(listener)) {
@@ -56,6 +63,13 @@ class SpeedManagerImpl(
 
     override fun unregisterListener(listener: SpeedManager.Listener) {
         listeners.remove(listener)
+    }
+
+    private fun resetSpeed() {
+        speed = 0.0
+        speedKmh = 0.0
+        speedMph = 0.0
+        speedPace = 0.0
     }
 
     private fun notifyListeners() {
@@ -75,8 +89,19 @@ class SpeedManagerImpl(
         private const val HOUR_MULTIPLIER = 3600
         private const val UNIT_MULTIPLIERS = 0.001
 
-        private fun convertSpeed(speed: Double): Double {
+        private fun convertSpeedHmh(speed: Double): Double {
             return speed * HOUR_MULTIPLIER * UNIT_MULTIPLIERS
+        }
+
+        private fun convertSpeedMph(speed: Double): Double {
+            return speed * 2.23694
+        }
+
+        private fun convertSpeedPace(speed: Double): Double {
+            return SpeedUtils.convertFromMeterPerSecond(
+                speed,
+                SpeedUnit.PACE
+            )
         }
     }
 }

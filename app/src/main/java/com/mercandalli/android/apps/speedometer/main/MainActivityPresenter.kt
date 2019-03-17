@@ -28,7 +28,7 @@ class MainActivityPresenter(
         themeManager.unregisterThemeListener(themeListener)
     }
 
-    override fun onMoreClicked() {
+    override fun onMoreViewClicked() {
         val themeView = themeManager.getThemeView()
         val newThemeView = when (themeView) {
             ThemeManager.ThemeView.Tesla -> ThemeManager.ThemeView.Segment
@@ -38,11 +38,20 @@ class MainActivityPresenter(
         themeManager.setThemeView(newThemeView)
     }
 
+    override fun onMoreThemeClicked() {
+        val darkEnable = themeManager.isDarkEnable()
+        themeManager.setDarkEnable(
+            !darkEnable
+        )
+    }
+
     override fun onSpeedUnitClicked() {
         val speedUnit = speedUnitManager.getSpeedUnit()
         val newSpeedUnitManager = when (speedUnit) {
             SpeedUnit.KPH -> SpeedUnit.MPH
-            SpeedUnit.MPH -> SpeedUnit.KPH
+            SpeedUnit.MPH -> SpeedUnit.MS
+            SpeedUnit.MS -> SpeedUnit.PACE
+            SpeedUnit.PACE -> SpeedUnit.KPH
         }
         speedUnitManager.setSpeedUnit(newSpeedUnitManager)
     }
@@ -54,6 +63,8 @@ class MainActivityPresenter(
             ThemeManager.ThemeView.Segment -> screen.showSegmentSpeedView()
             ThemeManager.ThemeView.Google -> screen.showGoogleSpeedView()
         }
+        val theme = themeManager.getTheme()
+        screen.setWindowBackgroundColorRes(theme.windowBackgroundColorRes)
     }
 
     private fun createSpeedListener() = object : SpeedManager.Listener {

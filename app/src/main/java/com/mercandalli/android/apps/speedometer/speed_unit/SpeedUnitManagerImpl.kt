@@ -63,6 +63,8 @@ class SpeedUnitManagerImpl(
             return when (speedUnit) {
                 SpeedUnit.MPH -> "mph"
                 SpeedUnit.KPH -> "kph"
+                SpeedUnit.MS -> "ms"
+                SpeedUnit.PACE -> "pace"
             }
         }
 
@@ -72,6 +74,8 @@ class SpeedUnitManagerImpl(
             return when (speedUnitString) {
                 "mph" -> SpeedUnit.MPH
                 "kpm" -> SpeedUnit.KPH
+                "ms" -> SpeedUnit.MS
+                "pace" -> SpeedUnit.PACE
                 else -> SpeedUnit.KPH
             }
         }

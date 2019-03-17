@@ -12,5 +12,7 @@ open class Theme(
     @ColorRes
     val textSecondaryColorRes: Int,
     @ColorRes
+    val textThirdColorRes: Int,
+    @ColorRes
     val cardBackgroundColorRes: Int
 )

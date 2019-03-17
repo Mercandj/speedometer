@@ -10,7 +10,11 @@ interface SpeedManager {
 
     fun getSpeed(): Double
 
+    fun getSpeedMph(): Double
+
     fun getSpeedKmh(): Double
+
+    fun getSpeedPace(): Double
 
     fun registerListener(listener: Listener)
 

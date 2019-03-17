@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.main.ApplicationGraph
@@ -19,6 +21,7 @@ class SpeedTeslaView @JvmOverloads constructor(
     private val view = View.inflate(context, R.layout.view_speed_tesla, this)
     private val speed: TextView = view.findViewById(R.id.view_speed_tesla_speed)
     private val speedUnit: TextView = view.findViewById(R.id.view_speed_tesla_speed_unit)
+    private val title: TextView = view.findViewById(R.id.view_speed_tesla_title)
     private val fab: FloatingActionButton = view.findViewById(R.id.view_speed_tesla_fab)
     private val more: ImageView = view.findViewById(R.id.view_speed_tesla_more)
     private val userAction = createUserAction()
@@ -60,6 +63,15 @@ class SpeedTeslaView @JvmOverloads constructor(
         override fun setStartStopButtonText(drawableRes: Int) {
             fab.setImageResource(drawableRes)
         }
+
+        override fun setTextSecondaryColorRes(
+            @ColorRes colorRes: Int
+        ) {
+            val color = ContextCompat.getColor(context, colorRes)
+            speed.setTextColor(color)
+            speedUnit.setTextColor(color)
+            title.setTextColor(color)
+        }
     }
 
     private fun createUserAction(): SpeedTeslaViewContract.UserAction {
@@ -75,12 +87,14 @@ class SpeedTeslaView @JvmOverloads constructor(
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
         val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
+        val themeManager = ApplicationGraph.getThemeManager()
         return SpeedTeslaViewPresenter(
             screen,
             locationManager,
             permissionManager,
             speedManager,
-            speedUnitManager
+            speedUnitManager,
+            themeManager
         )
     }
 }

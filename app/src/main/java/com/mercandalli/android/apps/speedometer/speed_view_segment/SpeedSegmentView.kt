@@ -1,14 +1,12 @@
 package com.mercandalli.android.apps.speedometer.speed_view_segment
 
 import android.content.Context
-import android.graphics.Color
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.main.ApplicationGraph
 import com.mercandalli.android.apps.speedometer.speed_view.SpeedView
@@ -22,8 +20,10 @@ class SpeedSegmentView @JvmOverloads constructor(
 
     private val view = View.inflate(context, R.layout.view_speed_segment, this)
     private val speed: TextView = view.findViewById(R.id.view_speed_segment_speed)
+    private val speedOff: TextView = view.findViewById(R.id.view_speed_segment_speed_off)
     private val speedUnit: TextView = view.findViewById(R.id.view_speed_segment_speed_unit)
     private val startStopButton: TextView = view.findViewById(R.id.view_speed_segment_start)
+    private val title: TextView = view.findViewById(R.id.view_speed_segment_title)
     private val more: ImageView = view.findViewById(R.id.view_speed_segment_more)
     private val userAction = createUserAction()
 
@@ -54,20 +54,9 @@ class SpeedSegmentView @JvmOverloads constructor(
     private fun createScreen() = object : SpeedSegmentViewContract.Screen {
 
         override fun setSpeedText(
-            textFirstDigits: String,
-            textLastDigits: String
+            text: String
         ) {
-            val text = "$textFirstDigits$textLastDigits"
-            val spannableString = SpannableString(
-                text
-            )
-            spannableString.setSpan(
-                ForegroundColorSpan(Color.parseColor("#F0F0F0")),
-                0,
-                textFirstDigits.count(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            speed.text = spannableString
+            speed.text = text
         }
 
         override fun setSpeedUnitText(text: String) {
@@ -76,6 +65,23 @@ class SpeedSegmentView @JvmOverloads constructor(
 
         override fun setStartStopButtonText(text: String) {
             startStopButton.text = text
+        }
+
+        override fun setTextSecondaryColorRes(
+            @ColorRes colorRes: Int
+        ) {
+            val color = ContextCompat.getColor(context, colorRes)
+            speed.setTextColor(color)
+            speedUnit.setTextColor(color)
+            startStopButton.setTextColor(color)
+            title.setTextColor(color)
+        }
+
+        override fun setTextThirdColorRes(
+            @ColorRes colorRes: Int
+        ) {
+            val color = ContextCompat.getColor(context, colorRes)
+            speedOff.setTextColor(color)
         }
     }
 
@@ -92,12 +98,14 @@ class SpeedSegmentView @JvmOverloads constructor(
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
         val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
+        val themeManager = ApplicationGraph.getThemeManager()
         return SpeedSegmentViewPresenter(
             screen,
             locationManager,
             permissionManager,
             speedManager,
-            speedUnitManager
+            speedUnitManager,
+            themeManager
         )
     }
 }

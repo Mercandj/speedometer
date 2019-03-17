@@ -1,9 +1,14 @@
 package com.mercandalli.android.apps.speedometer.main
 
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.activity.ActivityExtension.bind
 import com.mercandalli.android.apps.speedometer.speed_view.SpeedView
@@ -72,7 +77,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun createOnMoreClickedListener() = object : SpeedView.OnMoreClickedListener {
         override fun onMoreClicked(view: View) {
-            userAction.onMoreClicked()
+            val popupMenu = PopupMenu(this@MainActivity, view, Gravity.END)
+            popupMenu.menuInflater.inflate(R.menu.menu_more, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_more_view -> userAction.onMoreViewClicked()
+                    R.id.menu_more_theme -> userAction.onMoreThemeClicked()
+                }
+                false
+            }
+            popupMenu.show()
         }
     }
 
@@ -102,6 +116,13 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             setSpeedView(SpeedGoogleView(this@MainActivity))
+        }
+
+        override fun setWindowBackgroundColorRes(
+            @ColorRes colorRes: Int
+        ) {
+            val color = ContextCompat.getColor(this@MainActivity, colorRes)
+            window.setBackgroundDrawable(ColorDrawable(color))
         }
     }
 

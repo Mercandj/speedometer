@@ -1,5 +1,7 @@
 package com.mercandalli.android.apps.speedometer.speed_view_google
 
+import androidx.annotation.ColorRes
+
 interface SpeedGoogleViewContract {
 
     interface UserAction {
@@ -17,11 +19,16 @@ interface SpeedGoogleViewContract {
 
         fun setSpeedText(
             textFirstDigits: String,
-            textLastDigits: String
+            textLastDigits: String,
+            @ColorRes textThirdColorRes: Int
         )
 
         fun setSpeedUnitText(text: String)
 
         fun setStartStopButtonText(text: String)
+
+        fun setTextSecondaryColorRes(
+            @ColorRes colorRes: Int
+        )
     }
 }

@@ -1,5 +1,7 @@
 package com.mercandalli.android.apps.speedometer.main
 
+import androidx.annotation.ColorRes
+
 interface MainActivityContract {
 
     interface UserAction {
@@ -8,7 +10,9 @@ interface MainActivityContract {
 
         fun onDestroy()
 
-        fun onMoreClicked()
+        fun onMoreViewClicked()
+
+        fun onMoreThemeClicked()
 
         fun onSpeedUnitClicked()
     }
@@ -20,5 +24,9 @@ interface MainActivityContract {
         fun showSegmentSpeedView()
 
         fun showGoogleSpeedView()
+
+        fun setWindowBackgroundColorRes(
+            @ColorRes colorRes: Int
+        )
     }
 }

@@ -9,6 +9,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.mercandalli.android.apps.speedometer.R
 import com.mercandalli.android.apps.speedometer.main.ApplicationGraph
 import com.mercandalli.android.apps.speedometer.speed_view.SpeedView
@@ -23,6 +25,7 @@ class SpeedGoogleView @JvmOverloads constructor(
     private val speed: TextView = view.findViewById(R.id.view_speed_google_speed)
     private val speedUnit: TextView = view.findViewById(R.id.view_speed_google_speed_unit)
     private val startStopButton: TextView = view.findViewById(R.id.view_speed_google_start)
+    private val title: TextView = view.findViewById(R.id.view_speed_google_title)
     private val more: ImageView = view.findViewById(R.id.view_speed_google_more)
     private val userAction = createUserAction()
 
@@ -54,14 +57,16 @@ class SpeedGoogleView @JvmOverloads constructor(
 
         override fun setSpeedText(
             textFirstDigits: String,
-            textLastDigits: String
+            textLastDigits: String,
+            @ColorRes textThirdColorRes: Int
         ) {
+            val textThirdColor = ContextCompat.getColor(context, textThirdColorRes)
             val text = "$textFirstDigits$textLastDigits"
             val spannableString = SpannableString(
                 text
             )
             spannableString.setSpan(
-                ForegroundColorSpan(Color.parseColor("#F0F0F0")),
+                ForegroundColorSpan(textThirdColor),
                 0,
                 textFirstDigits.count(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -75,6 +80,16 @@ class SpeedGoogleView @JvmOverloads constructor(
 
         override fun setStartStopButtonText(text: String) {
             startStopButton.text = text
+        }
+
+        override fun setTextSecondaryColorRes(
+            @ColorRes colorRes: Int
+        ) {
+            val color = ContextCompat.getColor(context, colorRes)
+            speed.setTextColor(color)
+            speedUnit.setTextColor(color)
+            startStopButton.setTextColor(color)
+            title.setTextColor(color)
         }
     }
 
@@ -91,12 +106,14 @@ class SpeedGoogleView @JvmOverloads constructor(
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
         val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
+        val themeManager = ApplicationGraph.getThemeManager()
         return SpeedGoogleViewPresenter(
             screen,
             locationManager,
             permissionManager,
             speedManager,
-            speedUnitManager
+            speedUnitManager,
+            themeManager
         )
     }
 }
