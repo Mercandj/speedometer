@@ -12,17 +12,31 @@ open class SpeedView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var onMoreClickedListener: OnMoreClickedListener? = null
+    private var onSpeedUnitClickedListener: OnSpeedUnitClickedListener? = null
 
     fun setOnMoreClickedListener(listener: OnMoreClickedListener?) {
         onMoreClickedListener = listener
+    }
+
+    fun setOnSpeedUnitClickedListener(listener: OnSpeedUnitClickedListener?) {
+        onSpeedUnitClickedListener = listener
     }
 
     protected fun notifyOnMoreClicked(view: View) {
         onMoreClickedListener?.onMoreClicked(view)
     }
 
+    protected fun notifyOnSpeedUnitClicked(view: View) {
+        onSpeedUnitClickedListener?.onSpeedUnitClicked(view)
+    }
+
     interface OnMoreClickedListener {
 
         fun onMoreClicked(view: View)
+    }
+
+    interface OnSpeedUnitClickedListener {
+
+        fun onSpeedUnitClicked(view: View)
     }
 }

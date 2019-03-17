@@ -30,6 +30,9 @@ class SpeedTeslaView @JvmOverloads constructor(
         more.setOnClickListener {
             notifyOnMoreClicked(it)
         }
+        speedUnit.setOnClickListener {
+            notifyOnSpeedUnitClicked(it)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -71,11 +74,13 @@ class SpeedTeslaView @JvmOverloads constructor(
         val locationManager = ApplicationGraph.getLocationManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
+        val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
         return SpeedTeslaViewPresenter(
             screen,
             locationManager,
             permissionManager,
-            speedManager
+            speedManager,
+            speedUnitManager
         )
     }
 }

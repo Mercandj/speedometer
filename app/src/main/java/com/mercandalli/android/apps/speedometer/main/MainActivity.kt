@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private val speedViewContainer: FrameLayout by bind(R.id.activity_main_speed_view_container)
     private val onMoreClickedListener = createOnMoreClickedListener()
+    private val onSpeedUnitClickedListener = createOnSpeedUnitClickedListener()
     private val userAction = createUserAction()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,15 @@ class MainActivity : AppCompatActivity() {
         }
         val currentSpeedView = speedViewContainer.getChildAt(0) as SpeedView
         currentSpeedView.setOnMoreClickedListener(null)
+        currentSpeedView.setOnSpeedUnitClickedListener(null)
         speedViewContainer.removeAllViews()
+    }
+
+    private fun setSpeedView(speedView: SpeedView) {
+        clearSpeedViewContainer()
+        speedView.setOnMoreClickedListener(onMoreClickedListener)
+        speedView.setOnSpeedUnitClickedListener(onSpeedUnitClickedListener)
+        speedViewContainer.addView(speedView)
     }
 
     private fun createOnMoreClickedListener() = object : SpeedView.OnMoreClickedListener {
@@ -67,48 +76,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun createOnSpeedUnitClickedListener() = object : SpeedView.OnSpeedUnitClickedListener {
+        override fun onSpeedUnitClicked(view: View) {
+            userAction.onSpeedUnitClicked()
+        }
+    }
+
     private fun createScreen() = object : MainActivityContract.Screen {
         override fun showTeslaSpeedView() {
             if (isCurrentSpeedViewTesla()) {
                 return
             }
-            clearSpeedViewContainer()
-            val speedView = SpeedTeslaView(this@MainActivity)
-            speedView.setOnMoreClickedListener(onMoreClickedListener)
-            speedViewContainer.addView(speedView)
+            setSpeedView(SpeedTeslaView(this@MainActivity))
         }
 
         override fun showSegmentSpeedView() {
             if (isCurrentSpeedViewSegment()) {
                 return
             }
-            clearSpeedViewContainer()
-            val speedView = SpeedSegmentView(this@MainActivity)
-            speedView.setOnMoreClickedListener(onMoreClickedListener)
-            speedViewContainer.addView(speedView)
-
+            setSpeedView(SpeedSegmentView(this@MainActivity))
         }
 
         override fun showGoogleSpeedView() {
             if (isCurrentSpeedViewGoogle()) {
                 return
             }
-            clearSpeedViewContainer()
-            val speedView = SpeedGoogleView(this@MainActivity)
-            speedView.setOnMoreClickedListener(onMoreClickedListener)
-            speedViewContainer.addView(speedView)
+            setSpeedView(SpeedGoogleView(this@MainActivity))
         }
     }
 
     private fun createUserAction(): MainActivityContract.UserAction {
         val screen = createScreen()
-        val speedManager = ApplicationGraph.getSpeedManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
+        val speedManager = ApplicationGraph.getSpeedManager()
+        val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
         val themeManager = ApplicationGraph.getThemeManager()
         return MainActivityPresenter(
             screen,
-            speedManager,
             permissionManager,
+            speedManager,
+            speedUnitManager,
             themeManager
         )
     }

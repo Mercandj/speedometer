@@ -9,6 +9,8 @@ interface MainActivityContract {
         fun onDestroy()
 
         fun onMoreClicked()
+
+        fun onSpeedUnitClicked()
     }
 
     interface Screen {

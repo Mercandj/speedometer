@@ -35,6 +35,9 @@ class SpeedGoogleView @JvmOverloads constructor(
         more.setOnClickListener {
             notifyOnMoreClicked(it)
         }
+        speedUnit.setOnClickListener {
+            notifyOnSpeedUnitClicked(it)
+        }
     }
 
     override fun onAttachedToWindow() {

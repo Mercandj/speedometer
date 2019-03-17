@@ -10,6 +10,7 @@ import com.mercandalli.android.apps.speedometer.permission.PermissionModule
 import com.mercandalli.android.apps.speedometer.remote_config.RemoteConfigModule
 import com.mercandalli.android.apps.speedometer.screen.ScreenModule
 import com.mercandalli.android.apps.speedometer.speed.SpeedModule
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnitModule
 import com.mercandalli.android.apps.speedometer.theme.ThemeModule
 import com.mercandalli.android.apps.speedometer.toast.ToastModule
 import com.mercandalli.android.apps.speedometer.update.UpdateModule
@@ -30,6 +31,7 @@ class ApplicationGraph(
     private val remoteConfigInternal by lazy { RemoteConfigModule().createRemoteConfig() }
     private val screenManagerInternal by lazy { ScreenModule(context).createScreenManager() }
     private val speedManagerInternal by lazy { SpeedModule().createSpeedManager() }
+    private val speedUnitManagerInternal by lazy { SpeedUnitModule().createSpeedUnitManager() }
     private val toastManagerInternal by lazy { ToastModule(context).createToastManager() }
     private val themeManagerInternal by lazy { ThemeModule(context).createThemeManager() }
     private val updateManagerInternal by lazy { UpdateModule(context).createUpdateManager() }
@@ -57,6 +59,7 @@ class ApplicationGraph(
         fun getRemoteConfig() = graph!!.remoteConfigInternal
         fun getScreenManager() = graph!!.screenManagerInternal
         fun getSpeedManager() = graph!!.speedManagerInternal
+        fun getSpeedUnitManager() = graph!!.speedUnitManagerInternal
         fun getToastManager() = graph!!.toastManagerInternal
         fun getThemeManager() = graph!!.themeManagerInternal
         fun getUpdateManager() = graph!!.updateManagerInternal

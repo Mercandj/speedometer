@@ -2,12 +2,15 @@ package com.mercandalli.android.apps.speedometer.main
 
 import com.mercandalli.android.apps.speedometer.permission.PermissionManager
 import com.mercandalli.android.apps.speedometer.speed.SpeedManager
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnit
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnitManager
 import com.mercandalli.android.apps.speedometer.theme.ThemeManager
 
 class MainActivityPresenter(
     private val screen: MainActivityContract.Screen,
-    private val speedManager: SpeedManager,
     private val permissionManager: PermissionManager,
+    private val speedManager: SpeedManager,
+    private val speedUnitManager: SpeedUnitManager,
     private val themeManager: ThemeManager
 ) : MainActivityContract.UserAction {
 
@@ -33,6 +36,15 @@ class MainActivityPresenter(
             ThemeManager.ThemeView.Google -> ThemeManager.ThemeView.Tesla
         }
         themeManager.setThemeView(newThemeView)
+    }
+
+    override fun onSpeedUnitClicked() {
+        val speedUnit = speedUnitManager.getSpeedUnit()
+        val newSpeedUnitManager = when (speedUnit) {
+            SpeedUnit.KPH -> SpeedUnit.MPH
+            SpeedUnit.MPH -> SpeedUnit.KPH
+        }
+        speedUnitManager.setSpeedUnit(newSpeedUnitManager)
     }
 
     private fun updateScreen() {
