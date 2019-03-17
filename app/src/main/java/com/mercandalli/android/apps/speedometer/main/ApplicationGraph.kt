@@ -31,7 +31,7 @@ class ApplicationGraph(
     private val remoteConfigInternal by lazy { RemoteConfigModule().createRemoteConfig() }
     private val screenManagerInternal by lazy { ScreenModule(context).createScreenManager() }
     private val speedManagerInternal by lazy { SpeedModule().createSpeedManager() }
-    private val speedUnitManagerInternal by lazy { SpeedUnitModule().createSpeedUnitManager() }
+    private val speedUnitManagerInternal by lazy { SpeedUnitModule(context).createSpeedUnitManager() }
     private val toastManagerInternal by lazy { ToastModule(context).createToastManager() }
     private val themeManagerInternal by lazy { ThemeModule(context).createThemeManager() }
     private val updateManagerInternal by lazy { UpdateModule(context).createUpdateManager() }

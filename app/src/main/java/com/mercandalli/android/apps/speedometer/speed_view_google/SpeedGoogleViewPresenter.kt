@@ -3,23 +3,29 @@ package com.mercandalli.android.apps.speedometer.speed_view_google
 import com.mercandalli.android.apps.speedometer.location.LocationManager
 import com.mercandalli.android.apps.speedometer.permission.PermissionManager
 import com.mercandalli.android.apps.speedometer.speed.SpeedManager
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnit
+import com.mercandalli.android.apps.speedometer.speed_unit.SpeedUnitManager
 
 class SpeedGoogleViewPresenter(
     private val screen: SpeedGoogleViewContract.Screen,
     private val locationManager: LocationManager,
     private val permissionManager: PermissionManager,
-    private val speedManager: SpeedManager
+    private val speedManager: SpeedManager,
+    private val speedUnitManager: SpeedUnitManager
 ) : SpeedGoogleViewContract.UserAction {
 
     private val speedListener = createSpeedListener()
+    private val speedUnitListener = createSpeedUnitListener()
 
     override fun onAttached() {
         speedManager.registerListener(speedListener)
+        speedUnitManager.registerSpeedUnitListener(speedUnitListener)
         updateScreen()
     }
 
     override fun onDetached() {
         speedManager.unregisterListener(speedListener)
+        speedUnitManager.unregisterSpeedUnitListener(speedUnitListener)
     }
 
     override fun onStartClicked(
@@ -44,7 +50,11 @@ class SpeedGoogleViewPresenter(
     }
 
     private fun updateScreen() {
-        val speed = speedManager.getSpeedKmh().toInt()
+        val speedUnit = speedUnitManager.getSpeedUnit()
+        val speed = when (speedUnit) {
+            SpeedUnit.KPH -> speedManager.getSpeedKmh().toInt()
+            SpeedUnit.MPH -> speedManager.getSpeed().toInt()
+        }
         val speedText = speed.toString()
         val speedFirstDigit = when {
             speed < 10 -> "00"
@@ -55,7 +65,12 @@ class SpeedGoogleViewPresenter(
             speedFirstDigit,
             speedText
         )
-        screen.setSpeedUnitText("km/h")
+        screen.setSpeedUnitText(
+            when (speedUnit) {
+                SpeedUnit.KPH -> "km/h"
+                SpeedUnit.MPH -> "mph"
+            }
+        )
         val startStopButtonText = if (speedManager.isStarted()) {
             "STOP"
         } else {
@@ -66,6 +81,12 @@ class SpeedGoogleViewPresenter(
 
     private fun createSpeedListener() = object : SpeedManager.Listener {
         override fun onSpeedChanged() {
+            updateScreen()
+        }
+    }
+
+    private fun createSpeedUnitListener() = object : SpeedUnitManager.SpeedUnitListener {
+        override fun onSpeedUnitChanged() {
             updateScreen()
         }
     }

@@ -91,11 +91,13 @@ class SpeedSegmentView @JvmOverloads constructor(
         val locationManager = ApplicationGraph.getLocationManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
+        val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
         return SpeedSegmentViewPresenter(
             screen,
             locationManager,
             permissionManager,
-            speedManager
+            speedManager,
+            speedUnitManager
         )
     }
 }

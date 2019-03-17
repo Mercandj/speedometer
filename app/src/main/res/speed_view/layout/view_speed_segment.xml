@@ -69,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:background="?selectableItemBackground"
                 android:fontFamily="@font/google_sans_regular"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"

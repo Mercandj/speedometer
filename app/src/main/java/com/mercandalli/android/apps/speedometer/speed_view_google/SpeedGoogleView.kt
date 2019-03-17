@@ -90,11 +90,13 @@ class SpeedGoogleView @JvmOverloads constructor(
         val locationManager = ApplicationGraph.getLocationManager()
         val permissionManager = ApplicationGraph.getPermissionManager()
         val speedManager = ApplicationGraph.getSpeedManager()
+        val speedUnitManager = ApplicationGraph.getSpeedUnitManager()
         return SpeedGoogleViewPresenter(
             screen,
             locationManager,
             permissionManager,
-            speedManager
+            speedManager,
+            speedUnitManager
         )
     }
 }
