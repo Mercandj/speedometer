@@ -7,9 +7,9 @@ import org.junit.Test
 class SpeedUtilsTest {
 
     @Test
-    fun convertFromMeterPerSecondToPace() {
+    fun convertFiveMeterPerSecondToPace() {
         // Given
-        val speedMs = 60.0 / 1000.0
+        val speedMs = 4.0 // 14.4 km/h
 
         // When
         val pace = SpeedUtils.convertFromMeterPerSecond(
@@ -19,14 +19,15 @@ class SpeedUtilsTest {
 
         // Then
         Assert.assertTrue(
-            (1 - pace) < 0.000001
+            "Pace $pace",
+            pace < 4.2 && pace > 4.1
         )
     }
 
     @Test
-    fun convertOneMeterPerSecondToPace() {
+    fun convertTenHmhToPace() {
         // Given
-        val speedMs = 1.0
+        val speedMs = 2.7777777777 // 10.0 km/h
 
         // When
         val pace = SpeedUtils.convertFromMeterPerSecond(
@@ -36,7 +37,8 @@ class SpeedUtilsTest {
 
         // Then
         Assert.assertTrue(
-            (0.06 - pace) < 0.000001
+            "Pace $pace",
+            pace < 6.1111 && pace > 5.99999
         )
     }
 }

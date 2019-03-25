@@ -92,9 +92,7 @@ internal class PlayBillingManagerImpl(
                     isServiceConnected = true
                     executeOnSuccess?.run()
                 } else {
-                    if (listener != null) {
-                        listener!!.connectionToServiceFailed()
-                    }
+                    listener?.connectionToServiceFailed()
                 }
             }
 

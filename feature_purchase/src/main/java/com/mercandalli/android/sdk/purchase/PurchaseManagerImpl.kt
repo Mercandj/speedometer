@@ -30,6 +30,7 @@ internal class PurchaseManagerImpl(
         initializeCalled = true
         playBillingManager.setUpPlayBilling()
         playBillingManager.setPlayBillingManagerListener(playBillingManagerListener)
+        restore()
     }
 
     override fun purchase(
@@ -37,6 +38,10 @@ internal class PurchaseManagerImpl(
         sku: String,
         @PurchaseManager.Companion.SkuType skuType: String
     ) {
+        if (purchaseRepository.isPurchased(sku)) {
+            notifyPurchasedChanged()
+            return
+        }
         val skuTypeGoogle = convertSkuType(skuType)
         val runnable = Runnable {
             val builder = BillingFlowParams
@@ -79,7 +84,6 @@ internal class PurchaseManagerImpl(
     }
 
     override fun requestSkuDetails(
-        activityContainer: PurchaseManager.ActivityContainer,
         sku: String,
         @BillingClient.SkuType skuType: String
     ) {
@@ -120,6 +124,28 @@ internal class PurchaseManagerImpl(
 
     override fun unregisterListener(listener: PurchaseManager.Listener) {
         listeners.remove(listener)
+    }
+
+    private fun restore() {
+        val runnable = Runnable {
+            val inAppPurchasesResult = playBillingManager.queryPurchases(BillingClient.SkuType.INAPP)
+            var purchaseAdded = false
+            for (purchase in inAppPurchasesResult.purchasesList) {
+                if (purchaseRepository.addPurchased(purchase.sku)) {
+                    purchaseAdded = true
+                }
+            }
+            val subsPurchasesResult = playBillingManager.queryPurchases(BillingClient.SkuType.SUBS)
+            for (purchase in subsPurchasesResult.purchasesList) {
+                if (purchaseRepository.addPurchased(purchase.sku)) {
+                    purchaseAdded = true
+                }
+            }
+            if (purchaseAdded) {
+                notifyPurchasedChanged()
+            }
+        }
+        playBillingManager.executeServiceRequest(runnable)
     }
 
     private fun notifySkuDetailsChanged(skuDetails: SkuDetails) {

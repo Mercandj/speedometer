@@ -18,7 +18,6 @@ interface PurchaseManager {
     )
 
     fun requestSkuDetails(
-        activityContainer: ActivityContainer,
         sku: String,
         @SkuType skuType: String
     )

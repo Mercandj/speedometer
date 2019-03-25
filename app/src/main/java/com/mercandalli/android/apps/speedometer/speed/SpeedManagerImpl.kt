@@ -25,7 +25,7 @@ class SpeedManagerImpl(
                     return
                 }
                 speed = location.speed.toDouble()
-                speedKmh = convertSpeedHmh(speed)
+                speedKmh = SpeedUtils.convertFromMeterPerSecondToHmh(speed)
                 speedMph = convertSpeedMph(speed)
                 speedPace = convertSpeedPace(speed)
                 notifyListeners()
@@ -85,13 +85,6 @@ class SpeedManagerImpl(
     }
 
     companion object {
-
-        private const val HOUR_MULTIPLIER = 3600
-        private const val UNIT_MULTIPLIERS = 0.001
-
-        private fun convertSpeedHmh(speed: Double): Double {
-            return speed * HOUR_MULTIPLIER * UNIT_MULTIPLIERS
-        }
 
         private fun convertSpeedMph(speed: Double): Double {
             return speed * 2.23694
