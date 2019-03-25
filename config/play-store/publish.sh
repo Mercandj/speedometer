@@ -112,7 +112,7 @@ pushd "$BASE_DIR"
     log_d "If all succeeded, AppBundle should have been uploaded in the internal chanel."
     log_d "If all succeeded, mapping.txt should be in the ./build folder."
     log_d "If all succeeded, app-release.apk should be in the ./build folder."
-    log_d "Please create a GitHub release with the apk rename filespace-app-release-<version>.apk"
+    log_d "Please create a GitHub release with the apk rename speedometer-app-release-<version>.apk"
     log_d "Please upload the mapping to the PlayStore"
     log_delimiter
 
